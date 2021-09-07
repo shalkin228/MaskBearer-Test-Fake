@@ -2,14 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 //thx shalkin228 4 the code
+[ExecuteInEditMode]
 public class ParalaxEffect : MonoBehaviour
 {
     [SerializeField] private float paralaxEffect;
     [SerializeField] private Transform cam;
     [SerializeField] private ParalaxDirection parDir;
-
     private Vector3 oldCamPos;
-
     private void Start()
     {
         oldCamPos = cam.position;
@@ -17,6 +16,7 @@ public class ParalaxEffect : MonoBehaviour
 
     private void FixedUpdate()
     {
+        
         if (parDir == ParalaxDirection.Horizontal)
         {
             Vector3 deltaMovement = cam.position - oldCamPos;

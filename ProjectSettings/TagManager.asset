@@ -38,6 +38,21 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: FarBG
+    uniqueID: 2754146507
+    locked: 0
+  - name: closeBG
+    uniqueID: 279798035
+    locked: 0
+  - name: Default-
+    uniqueID: 2748319959
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Default+
+    uniqueID: 3331903323
+    locked: 0
+  - name: close
+    uniqueID: 1538117907
     locked: 0
