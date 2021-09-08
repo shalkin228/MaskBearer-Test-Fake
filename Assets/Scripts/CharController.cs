@@ -9,15 +9,16 @@ public class CharController : MonoBehaviour
     private bool groundedPlayer;
     private float toFloor;
     private Vector2 acceleration = new Vector2(100.0f,0.1f);
-    private float speed = 5f;
-    private float jumpMaxFrames = 23;
-    private float jumpFrames = 0;
-    private float runStopFrames=0;
-    private float runStopFramesMax = 7;
-    private float jumpForce = 8f;
-    private float gravityperframe = 0.6f;
-    private float maxFallSpeed = -15f;
+    [SerializeField] private float speed = 20f;
+    [SerializeField] private float jumpMaxFrames = 23;
+    [SerializeField] private float jumpFrames = 0;
+    [SerializeField] private float runStopFrames=0;
+    [SerializeField] private float runStopFramesMax = 7;
+    [SerializeField] private float jumpForce = 8f;
+    [SerializeField] private float gravityperframe = 0.5f;
+    [SerializeField] private float maxFallSpeed = -15f;
     static private Rigidbody2D hitbox;
+    float prevDir; //NOT DIR VALUE IN PREVIOUS FRAME
     private BoxCollider2D cld;
     bool needJump=false;
     float dir;
@@ -44,11 +45,6 @@ public class CharController : MonoBehaviour
         ctrl = new InputMaster();
         ctrl.Player.Jump.started += ctx => StartJump();
         ctrl.Player.Jump.canceled += ctx => StopJump();
-    }
-    void rotate(Vector2 vec)
-    {
-        vec = ctrl.Player.DebugCamera.ReadValue<Vector2>();
-        transform.rotation = Quaternion.Euler(vec.x, vec.y, 0);
     }
     bool IsOnGround()
     {
@@ -81,6 +77,7 @@ public class CharController : MonoBehaviour
                 }
             }
         }
+        prevDir = transform.localScale.x;
     }
     public void StartJump()
     {
@@ -98,23 +95,24 @@ public class CharController : MonoBehaviour
     }
     void ProcessAnims()
     {
+        if (transform.localScale.x!=prevDir&&IsOnGround())
+        {
+            Debug.LogWarning("Triggered");
+            anim.SetTrigger("Turn");
+        }
+        /*else
+        {
+            anim.ResetTrigger("Turn");
+        }*/
+        Debug.Log(dir +" "+ prevDir);
         anim.SetFloat("vertSpeed", hitbox.velocity.y);
         anim.SetBool("isRunning", runStopFrames<runStopFramesMax+1);
         anim.SetBool("isGrounded", IsOnGround());
-        Debug.Log(dir);
     }
-    float prevdir=0;
     private void Move()
     {
         transform.FindChild("IsOnGroundTrigger").position = transform.position;
         dir = ctrl.Player.Walk.ReadValue<float>();
-
-        if (Mathf.Abs(prevdir) < Mathf.Pow(0.7f, 5))
-            prevdir = 0;
-        if(dir>0)
-            dir = Mathf.Abs(Mathf.Max(prevdir * 0.5f, dir));
-        if (dir<0)
-            dir = -Mathf.Abs(Mathf.Max(prevdir * 0.5f, dir));
         if (dir>0)
         {
             runStopFrames = 0;
@@ -130,8 +128,7 @@ public class CharController : MonoBehaviour
             runStopFrames++;
         }
         //Debug.Log(dir+" "+Time.time);
-        hitbox.velocity = new Vector3(dir * speed, Mathf.Max(hitbox.velocity.y - 0.6f, maxFallSpeed), 0);
-        prevdir = dir;
+        hitbox.velocity = new Vector3(((dir * speed) + hitbox.velocity.x*0.8f)/2, Mathf.Max(hitbox.velocity.y - 0.6f, maxFallSpeed), 0);
     }
     /*private void Move(float dir)//for level transitions
     {
