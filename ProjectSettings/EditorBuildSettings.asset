@@ -11,6 +11,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/DefaultRoom.unity
     guid: 6ee6fb19b41e50f4cb7293b6a57ea906
+  - enabled: 1
+    path: Assets/Scenes/Demo2Room.unity
+    guid: 3e01f3c6f4edb2948922765e63c9f86a
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 0956e4d240f3c2e498de01b19c20bdd0,
       type: 2}

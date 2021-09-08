@@ -6,19 +6,24 @@ public class LevelEntrance : MonoBehaviour
 {
     //private Scene currentScene = SceneManager.GetActiveScene();
     [SerializeField] private string SceneToLoad = @"Scene name in /Scenes directory";
-    [SerializeField] private string TransitionName = "Change me please";
-    [SerializeField] IntoLevelDir direction;
+    [SerializeField] public IntoLevelDir direction;
+    public Scene curr;
     [SerializeField] GameObject StartPos;
     private void OnTriggerEnter2D(Collider2D collidoder)
     {
-        SceneManager.LoadScene(SceneManager.GetSceneByPath(@"/Scenes"+SceneToLoad).buildIndex);
+        curr = SceneManager.GetActiveScene();
+        if (collidoder.gameObject == GameObject.FindGameObjectWithTag("Player"))
+        {
+            LevelTransitionManager.LoadLvl(SceneManager.GetActiveScene().path,SceneToLoad, this.gameObject);
+        }
     }
 
 }
-enum IntoLevelDir
+public enum IntoLevelDir
 {
     Fall,
-    Jump,
+    JumpLeft,
+    JumpRight,
     ToRight,
     ToLeft
 }

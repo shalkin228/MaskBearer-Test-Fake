@@ -42,9 +42,21 @@ public class CharController : MonoBehaviour
 
     private void Awake()
     {
+        GameObject[] objs = GameObject.FindGameObjectsWithTag("Player");
+
+        if (objs.Length > 1)
+        {
+            Destroy(this.gameObject);
+        }
+
+        DontDestroyOnLoad(this.gameObject);
         ctrl = new InputMaster();
         ctrl.Player.Jump.started += ctx => StartJump();
         ctrl.Player.Jump.canceled += ctx => StopJump();
+    }
+    public void setmypos(Vector3 vec)
+    {
+        transform.position = vec;
     }
     bool IsOnGround()
     {
@@ -97,7 +109,6 @@ public class CharController : MonoBehaviour
     {
         if (transform.localScale.x!=prevDir&&IsOnGround())
         {
-            Debug.LogWarning("Triggered");
             anim.SetTrigger("Turn");
         }
         /*else
