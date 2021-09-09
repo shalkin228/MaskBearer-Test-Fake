@@ -122,7 +122,7 @@ public class CharController : MonoBehaviour
     }
     private void Move()
     {
-        transform.FindChild("IsOnGroundTrigger").position = transform.position;
+        transform.Find("IsOnGroundTrigger").position = transform.position;
         dir = ctrl.Player.Walk.ReadValue<float>();
         if (dir>0)
         {
